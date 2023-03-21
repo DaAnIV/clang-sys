@@ -35,7 +35,16 @@ mod link;
 use std::mem;
 
 use std::os::raw::*;
-use libc::{time_t};
+
+cfg_if::cfg_if! {
+    if #[cfg(all(target_family = "wasm", target_pointer_width = "32"))] {
+        pub type time_t = i32;
+    } else if #[cfg(all(target_family = "wasm", target_pointer_width = "64"))] {
+        pub type time_t = i64;
+    } else {
+        use libc::{time_t};
+    }
+}
 
 pub type CXClientData = *mut c_void;
 pub type CXCursorVisitor = extern "C" fn(CXCursor, CXCursor, CXClientData) -> CXChildVisitResult;
