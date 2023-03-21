@@ -34,7 +34,8 @@ mod link;
 
 use std::mem;
 
-use libc::*;
+use std::os::raw::*;
+use libc::{time_t};
 
 pub type CXClientData = *mut c_void;
 pub type CXCursorVisitor = extern "C" fn(CXCursor, CXCursor, CXClientData) -> CXChildVisitResult;
